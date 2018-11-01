@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 public class EmployeeController {
     private final EmployeeRepository repository;
@@ -31,6 +32,17 @@ public class EmployeeController {
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
+    /*@GetMapping("/employees/{id}")
+    Resource<Employee> one(@PathVariable Long id) {
+
+        Employee employee = repository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException(id));
+
+        return new Resource<>(employee,
+                linkTo(methodOn(EmployeeController.class).one(id)).withSelfRel(),
+                linkTo(methodOn(EmployeeController.class).all()).withRel("employees"));
+    }*/
+
     @PutMapping("/employees/{id}")
     Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
 
@@ -49,5 +61,11 @@ public class EmployeeController {
     @DeleteMapping("/employees/{id}")
     void deleteEmployee(@PathVariable Long id) {
         repository.deleteById(id);
+    }
+
+    @RequestMapping(value = "/hello",method = RequestMethod.GET)
+    public String sayHello()
+    {
+        return "hahha";
     }
 }
